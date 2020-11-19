@@ -45,11 +45,20 @@ const ResultItem = styled.Text`
   margin-bottom: 30px;
 `;
 
+const PercentageArea = styled.View`
+  flex-direction: row;
+  margin: 20px;
+`;
+
+const PercentageItem = styled.Button`
+`;
+
 export default () => {
 
   //states
   const [ bill, setBill ] = useState('');
   const [ tip, setTip ] = useState(0);
+  const [ percentage, setPercentage ] = useState(10); //default 10%
 
   //functions
   const calculate = () => {
@@ -57,7 +66,8 @@ export default () => {
 
       //validate
       if (numericBill) {
-        setTip(numericBill * 0.1); //tip = 10%
+        //setTip(numericBill * 0.1); //tip = 10%
+        setTip((percentage/100) * numericBill);
       } else {
         alert("Enter account amount")
       }
@@ -72,7 +82,13 @@ export default () => {
         value={bill} // bill value
         onChangeText={text=>setBill(text)}//change Input text
       />
-      <CalcButton title="Calculate" onPress={calculate} />
+      <PercentageArea>
+        <PercentageItem title="5%" onPress={()=>setPercentage(5)} />
+        <PercentageItem title="10%" onPress={()=>setPercentage(10)} />
+        <PercentageItem title="15%" onPress={()=>setPercentage(15)} />
+        <PercentageItem title="20%" onPress={()=>setPercentage(20)} />
+      </PercentageArea>
+      <CalcButton title={`Calculate ${percentage}%`} onPress={calculate} />
       {tip > 0 &&
         //show result area
         <ResultArea>
@@ -80,7 +96,7 @@ export default () => {
           <ResultItem>$ {parseFloat(bill).toFixed(2)}</ResultItem>
 
           <ResultItemTitle>Tip</ResultItemTitle>
-          <ResultItem>$ {tip.toFixed(2)}</ResultItem>
+          <ResultItem>$ {tip.toFixed(2)} ({percentage}%)</ResultItem>
 
           <ResultItemTitle>Total</ResultItemTitle>
           <ResultItem>$ {(parseFloat(bill) + tip).toFixed(2)}</ResultItem>
