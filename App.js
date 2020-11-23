@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
 
 //styles
@@ -68,10 +68,15 @@ export default () => {
       if (numericBill) {
         //setTip(numericBill * 0.1); //tip = 10%
         setTip((percentage/100) * numericBill);
-      } else {
-        alert("Enter account amount")
       }
   }
+
+  //hooks - effect
+  //waiting for 'percentage' state change to update the calc
+  useEffect(() => {
+    calculate();
+    //alert("percentage changed")
+  }, [percentage]);
 
   return (
     <Page>
